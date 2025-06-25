@@ -15,7 +15,6 @@ TEMPLATE_DIR = "templates"
 OUTPUT_DIR = "output"
 SITE_TITLE = "Lokesh Nanda - Weekly Notes"
 SITE_SUBTITLE = "Weekly Learnings & Findings"
-SITE_BASE = "https://to-add.org"
 
 # Jinja setup
 env = Environment(loader=FileSystemLoader(TEMPLATE_DIR))
