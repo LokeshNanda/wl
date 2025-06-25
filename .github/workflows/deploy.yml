@@ -29,6 +29,11 @@ jobs:
       - name: Run build script
         run: python build.py
 
+      - name: List generated files
+        run: |
+          echo "Built files:"
+          ls -R ./output
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
