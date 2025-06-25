@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Sunday, 10 Aug 2025 | Lokesh Nanda - Weekly Notes</title>
+  <title>Sunday, 29 Jun 2025 | Lokesh Nanda - Weekly Notes</title>
   <link href="https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pygments/2.16.1/styles/github.min.css">
   <style>
@@ -187,27 +187,110 @@
 </head>
 <body>
   <div class="header">
-    <h1>Sunday, 10 Aug 2025</h1>
+    <h1>Sunday, 29 Jun 2025</h1>
     <div class="date">Weekly Notes and Findings</div>
   </div>
 
   
     <div class="note"><ul>
-<li>Reading the book on the snowball</li>
-<li>Warren buffett a&amp; the business of life</li>
-<li>Adding my learning here</li>
+<li>Came across a graph database - <a href="https://docs.hypermode.com/dgraph/overview">DGraph</a></li>
+<li>Found it to be very interesting open source project<ul>
+<li>Explored its competitor - Neo4j atlas:</li>
+<li>Created an account in neo4j atlas online. Self hosting was also an option, but went ahead with this.</li>
+<li>created an itegration to extract wiki pages using langgraph and extract entities.
+      ```python
+          from dotenv import load_dotenv
+          import os
+          from langchain_neo4j import Neo4jGraph<pre class="codehilite"><code>  from langchain_core.runnables import (
+      RunnableBranch,
+      RunnableLambda,
+      RunnableParallel,
+      RunnablePassthrough,
+  )
+  from langchain_core.prompts import ChatPromptTemplate
+  from langchain_core.prompts.prompt import PromptTemplate
+  from pydantic import BaseModel, Field
+  # from langchain_core.pydantic_v1 import BaseModel, Field
+  from typing import Tuple, List
+  from langchain_core.messages import AIMessage, HumanMessage
+  from langchain_core.output_parsers import StrOutputParser
+  from langchain_community.document_loaders import WikipediaLoader
+  from langchain.text_splitter import TokenTextSplitter
+  from langchain_openai import ChatOpenAI
+  from langchain_experimental.graph_transformers import LLMGraphTransformer
+
+  from langchain_neo4j import Neo4jVector
+  from langchain_openai import OpenAIEmbeddings
+  from langchain_neo4j.vectorstores.neo4j_vector import remove_lucene_chars
+
+  load_dotenv()
+
+  AURA_INSTANCENAME = os.environ[&quot;AURA_INSTANCENAME&quot;]
+  NEO4J_URI = os.environ[&quot;NEO4J_URI&quot;]
+  NEO4J_USERNAME = os.environ[&quot;NEO4J_USERNAME&quot;]
+  NEO4J_PASSWORD = os.environ[&quot;NEO4J_PASSWORD&quot;]
+  AUTH = (NEO4J_USERNAME, NEO4J_PASSWORD)
+
+  OPENAI_API_KEY = os.getenv(&quot;OPENAI_API_KEY&quot;)
+  OPENAI_ENDPOINT = os.getenv(&quot;OPENAI_ENDPOINT&quot;)
+
+  chat = ChatOpenAI(api_key=OPENAI_API_KEY, temperature=0, model=&quot;gpt-4o-mini&quot;)
+
+  kg = Neo4jGraph(
+    url=NEO4J_URI,
+    username=NEO4J_USERNAME,
+    password=NEO4J_PASSWORD,
+  ) #database=NEO4J_DATABASE,
+
+  # # # read the wikipedia page for the Roman Empire
+  raw_documents = WikipediaLoader(query=&quot;The Indian Politics&quot;).load()
+
+  # # # # # Define chunking strategy
+  text_splitter = TokenTextSplitter(chunk_size=512, chunk_overlap=24)
+  documents = text_splitter.split_documents(raw_documents[:3])
+  print(documents)
+
+  llm_transformer = LLMGraphTransformer(llm=chat)
+  graph_documents = llm_transformer.convert_to_graph_documents(documents)
+
+  # store to neo4j
+  res = kg.add_graph_documents(
+    graph_documents,
+    include_source=True,
+    baseEntityLabel=True,
+  )
+</code></pre>
+
+<p>```
+      - Doing similar in DGraph would require creating a wrapper as it doesn't have out of box integration with Dgraph.</p>
+</li>
+</ul>
+</li>
+</ul></div>
+  
+    <div class="note"><ul>
+<li>Reading the book - The snowball. Here are some concepts worth noting:</li>
+<li>Concept of "Inner Scorecard" vs. "Outer Scorecard" emerged: live by your own values, not society’s expectations.</li>
+<li>Ben Graham - Need to read again - The Intelligent Investor.</li>
+<li>Value Investion - Buying chepaer than the intrensic value.</li>
+</ul></div>
+  
+    <div class="note"><ul>
+<li>Learnt about gihub pages &amp; hosting static websites in it.</li>
+<li>Created a webpage https://lokeshnanda.github.io/wl/ where I would publish my daily notes.</li>
+<li>Identified the easiest and most economical way to create a domain would be using <a href="https://www.cloudflare.com/">Cloudflair domain</a></li>
 </ul></div>
   
 
   <nav>
     
-      <a href="2025-07-13.html">← Previous Week</a>
+      <span></span>
     
 
     <a href="index.html" class="nav-home">Home</a>
 
     
-      <a href="2025-08-24.html">Next Week →</a>
+      <span></span>
     
   </nav>
 </body>
