@@ -269,6 +269,82 @@
 </ul></div>
   
     <div class="note"><ul>
+<li>Wanted to explore and do hands-on in dbt. Here are the findings:</li>
+<li>Notes from Data Engineering project <a href="https://www.youtube.com/watch?v=zZVQluYDwYY&amp;t=5725s">DBT DE Project with Snowflake</a><ul>
+<li>DBT doesn't extract or load data. It focuses on transformation step in ETL.</li>
+<li>DBT works on top of Data Warehouse. Compute happens in the DW.</li>
+<li>I still wonder, I can have .sql in my source code repo and control using that, why dbt then?</li>
+<li>Benefits - Documentation out of box | Reusability | Testing Framework built-in | Dependency management | Modular</li>
+<li>DBT Cloud vs DBT Core</li>
+<li>DBT Core doesn't include built-in semantic layer. It can be done via MetricFlow but expose via api is only feature of cloud.</li>
+<li>Cube.dev -&gt; Is an alternative, if one want to stick to dbt core for semantic layer.</li>
+</ul>
+</li>
+<li>DBT markdown notes - <a href="https://publish.obsidian.md/datavidhya/Course+Notes/Dbt(databuildtool)/1.+Introduction+to+DBT">Link here</a></li>
+<li>DBT Models<ul>
+<li>SQL Scripts are written here. Can reference other models.
+<code>shell
+dbt run</code></li>
+<li><a href="https://docs.getdbt.com/docs/build/materializations">DBT Materialisation</a> for each folder. Supports - table | view | incremental | ephemeral</li>
+<li>For incremental, you need to write the logic<ul>
+<li>{% if is_incremental() %}</li>
+</ul>
+</li>
+<li>For ephemeral, it's more like creating table in memory, it doesn't get created in warehouse, however, you can still reference it.</li>
+<li>Look in dbt_project.yml -&gt; Overwrite possible with config {{ }} in the model sql files</li>
+</ul>
+</li>
+<li>DBT Seed - Not really helpful for large data. It can be used for smaller dataset.</li>
+<li>DBT Sources - Helpful for documentation<ul>
+<li>Create sources.yml under models/</li>
+</ul>
+</li>
+<li>DBT Snapshots<ul>
+<li>Built in implementation of type-2 scd.</li>
+<li>There are dbt packages, which are like reusable functions.</li>
+<li>Very useful, if one needs SCD in their data warehouse.</li>
+</ul>
+</li>
+<li>DBT Test<ul>
+<li>Generic Test - Define in the models/schema.yaml file</li>
+<li>Singular Test - Custom sql -&gt; tests/check_custom_business_logic.sql</li>
+<li>Test Config - Severity - warn, error -&gt; Things like this can be defined.</li>
+</ul>
+</li>
+<li>DBT Document<ul>
+<li>Powerful feature, out of box available in cloud
+  <code>bash
+  dbt docs generate
+  dbt docs serve</code></li>
+<li>Lot of features and customisation. Loved it. Lineage is very good.</li>
+</ul>
+</li>
+<li>DBT Macros<ul>
+<li>It is more like function. Reuse!</li>
+</ul>
+</li>
+<li>Hooks<ul>
+<li>Can be used for logging operation</li>
+<li>Maybe access permissions you want to give during start of job &amp; stop at end.</li>
+</ul>
+</li>
+<li>Operation Tasks<ul>
+<li>We can create custom operation by defining a macro Ex - Add partition at specific time</li>
+</ul>
+</li>
+<li>CICD should be setup in the repo.</li>
+<li>Airflow can be used to trigger models based on schedule.</li>
+<li>Model Organisation &amp; naming convention would be very critical here. Inspiration can be taken from <a href="https://publish.obsidian.md/datavidhya/Course+Notes/Dbt(databuildtool)/14.+Advance+DBT+Concept#Project+Organization">here</a></li>
+</ul></div>
+  
+    <div class="note"><ul>
+<li>DBT Cloud alternative for semantic layer, if one wants to use dbt-core - cube.dev</li>
+<li>https://cube.dev/docs/product/data-modeling/recipes/dbt</li>
+<li>Flowershow - Hosting markdown directly as website/blog from Github</li>
+<li>https://github.com/flowershow/flowershow/tree/self-hosted-archive</li>
+</ul></div>
+  
+    <div class="note"><ul>
 <li>Reading the book - The snowball. Here are some concepts worth noting:</li>
 <li>Concept of "Inner Scorecard" vs. "Outer Scorecard" emerged: live by your own values, not society’s expectations.</li>
 <li>Ben Graham - Need to read again - The Intelligent Investor.</li>
@@ -281,12 +357,68 @@
 <li>Identified the easiest and most economical way to create a domain would be using <a href="https://www.cloudflare.com/">Cloudflair domain</a></li>
 </ul></div>
   
-    <div class="note"><p>-</p></div>
+    <div class="note"><ul>
+<li>Notes from AWS Sumit India 2025</li>
+<li>Gen AI<ul>
+<li>Where amazon actually used in production genai internally? - chatbot | Audio, video &amp; image generator tool | Inventory management</li>
+<li>Amazon Q Developer</li>
+<li>Very similar to Cursor, Copilot.</li>
+<li>Amazon Q Business</li>
+<li>Out of box chatbot, on top of your internal data.</li>
+<li>It can integrate with sharepoint. We did this similar in Microsoft Copilot, but observed the cost to be really high for indexing of the documents.<ul>
+<li>Need to check on the cost side, how different it is.</li>
+</ul>
+</li>
+<li>Amazon developed AI Chips to help on cost reduction - AWS Trainium2 and Inferentia2.</li>
+<li>AWS Bedrock Agents:</li>
+<li>Simple multi agent flow use-case without coding can be done here. It points to a knowledge base.</li>
+<li>For tools, it allows access to Lambda functions.</li>
+<li>AWS Sagemaker - Hyperpod - Fine tuning of LLM's. Hardware support.</li>
+<li>Reserved Capacity - 6months - Observed 68% cost reduction.</li>
+<li>Slurm(Simple Linux Utility for Resource Manager) - Open Source orchestrator &amp; cluster management system for linux based.</li>
+<li>Peplexity AI | Stabality AI use Hyperpod for their training.</li>
+<li>Storage</li>
+<li>Amazon FSx for Lustre</li>
+</ul>
+</li>
+<li>Data<ul>
+<li>Amazon is going the Azure way of Fabric, by introducing Amazon Sagemaker Unified Studio (All in one plarform). Rebrand &amp; name change! Iceberg format native.</li>
+<li>But supports all 3 - Hudi, Delta &amp; Iceberg.</li>
+<li>Zero-ETL Integration - Federated Querying.</li>
+<li>Valkey on Amazon - In-memeory Database</li>
+<li>Amazon Elasticache (Serverless option also) - Microsecond write</li>
+<li>Amazon Memory DB (In memory with durability) - milli-second write coz data commiteed to multi AZ transaction log. - (Instance based.)<ul>
+<li>Free tier available for small workload.</li>
+</ul>
+</li>
+<li>Valkey - Community replacement of Redis, since 7.2, it was not under open-source license.</li>
+<li>Bedrock can be directly called in a SQL query for redshift. Directly create a sentiment score with just query. No need of Python etc. Good use-case.</li>
+<li>Zero-etl supported for Salesforce via Glue ETL. No need of creating a ingestion framework for this. Auto incremental setups available.</li>
+<li>Amazon s3 Table buckets - namespaces - tables</li>
+<li>Amazon S3 tables with Amazon Sagemaker Lakehouse.</li>
+<li>Auto handling of compaction | snapshots | file-cleaning</li>
+<li>Good support for Iceberg using Amazon Kinesis Data Streams &amp; data firehose stream for ingestion to S3 Tables. (Transform using lambda)</li>
+<li>Query using Athena and can modify realtime.</li>
+<li>Amazon Quicksight - Good Integration with Amazon Q for out of box dashboard creations.</li>
+</ul>
+</li>
+</ul></div>
+  
+    <div class="note"><ul>
+<li>(Use-case in security space)[https://www.zenml.io/llmops-database/optimizing-security-threat-investigation-with-multi-model-llm-strategy]</li>
+<li>Insurance claim processing - Intersting use-case for Gen AI app.</li>
+<li>I observed, if one agent has too many tasks &amp; tools to connect, it gets difficult to maintain the codebase as well it starts hallucinating. Mutil-agent architecture helps.</li>
+</ul></div>
+  
+    <div class="note"><ul>
+<li>Model distillation is a process where a smaller, more efficient model (student) learns to mimic a larger, more powerful model (teacher)</li>
+<li>Reduced cost.</li>
+</ul></div>
   
 
   <nav>
     
-      <span></span>
+      <a href="2025-06-22.html">← Previous Week</a>
     
 
     <a href="index.html" class="nav-home">Home</a>
