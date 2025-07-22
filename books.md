@@ -5,3 +5,8 @@
   - Concept of "Inner Scorecard" vs. "Outer Scorecard" emerged: live by your own values, not society’s expectations.
   - Ben Graham - Need to read again - The Intelligent Investor.
   - Value Investion - Buying chepaer than the intrensic value.
+
+## July 2025
+
+### 16 Jul 2025
+- Reading the book - The Intelligent Investor
